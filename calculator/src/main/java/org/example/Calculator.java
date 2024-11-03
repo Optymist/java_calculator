@@ -18,7 +18,7 @@ class Calculator extends JFrame implements ActionListener {
 
     Calculator() {
         frame = new JFrame("Calculator");
-        textField = new JTextField(20);
+        textField = new JTextField(30);
         s0 = s1 = s2 = "";
     }
 
@@ -38,10 +38,11 @@ class Calculator extends JFrame implements ActionListener {
             buttons.put("n" + i, new JButton(String.valueOf(i)));
         }
 
-        //        addNonNumberButtonsToMap();
+        addNonNumberButtonsToMap();
 
         addActionListeners(calculator);
         addNumBounds();
+        addNonNumBounds();
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
@@ -52,22 +53,22 @@ class Calculator extends JFrame implements ActionListener {
         panel.setBackground(Color.BLUE);
 
         frame.add(panel);
-        frame.setSize(200, 300);
+        frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setVisible(true);
 
     }
 
-//    private static void addNonNumberButtonsToMap() {
-//        buttons.put("oEq", new JButton("="));
-//        buttons.put("oP", new JButton("+"));
-//        buttons.put("oM", new JButton("-"));
-//        buttons.put("oT", new JButton("*"));
-//        buttons.put("oD", new JButton("/"));
-//        buttons.put("clear", new JButton("C"));
-//        buttons.put("dec", new JButton("."));
-//    }
+    private static void addNonNumberButtonsToMap() {
+        buttons.put("oP", new JButton("+"));
+        buttons.put("oM", new JButton("-"));
+        buttons.put("oT", new JButton("*"));
+        buttons.put("oD", new JButton("/"));
+        buttons.put("dec", new JButton("."));
+        buttons.put("clear", new JButton("C"));
+        buttons.put("oEq", new JButton("="));
+    }
 
     private static void addActionListeners(Calculator calculator) {
         for (JButton button : buttons.values()) {
@@ -93,6 +94,25 @@ class Calculator extends JFrame implements ActionListener {
         }
 
         buttons.get("n0").setBounds(startX + buttonSizeX + gap, startY + 3 * (buttonSizeY+gap), buttonSizeX, buttonSizeY);
+    }
+
+    private static void addNonNumBounds() {
+        int gap = 5;
+        int firstColX = 200;
+        int secColX = firstColX + 50 + gap;
+        int firstRowY = 50;
+        int secRowY = firstRowY + firstRowY + gap;
+        int thirdRowY = secRowY + firstRowY + gap;
+        int fourthRowY = thirdRowY + firstRowY + gap;
+
+        buttons.get("oP").setBounds(firstColX, firstRowY, buttonSizeX, buttonSizeY);
+        buttons.get("oM").setBounds(secColX, firstRowY, buttonSizeX, buttonSizeY);
+        buttons.get("oT").setBounds(firstColX, secRowY, buttonSizeX, buttonSizeY);
+        buttons.get("oD").setBounds(secColX, secRowY, buttonSizeX, buttonSizeY);
+        buttons.get("dec").setBounds(firstColX, thirdRowY, buttonSizeX, buttonSizeY);
+        buttons.get("clear").setBounds(secColX, thirdRowY, buttonSizeX, buttonSizeY);
+
+        buttons.get("oEq").setBounds(firstColX+gap, fourthRowY, buttonSizeX*2, buttonSizeY);
     }
 
 
