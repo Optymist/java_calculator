@@ -11,8 +11,9 @@ class Calculator extends JFrame implements ActionListener {
 
     private static final HashMap<String, JButton> buttons = new HashMap<>();
 
-    static JFrame frame;
-    static JTextField textField;
+    private static JFrame frame;
+    private static JTextField textField;
+    private static final JPanel panel = new JPanel();
 
     String inputToCalculate;
 
@@ -44,11 +45,10 @@ class Calculator extends JFrame implements ActionListener {
         addNumBounds();
         addNonNumBounds();
 
-        JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.add(textField);
 
-        addToPanel(panel);
+        addToPanel();
 
         panel.setBackground(Color.BLUE);
 
@@ -69,6 +69,7 @@ class Calculator extends JFrame implements ActionListener {
         buttons.put("clear", new JButton("C"));
         buttons.put("oEq", new JButton("="));
         buttons.put("del", new JButton("<-"));
+        buttons.put("colour", new JButton("Colour"));
     }
 
     private static void addActionListeners(Calculator calculator) {
@@ -77,7 +78,7 @@ class Calculator extends JFrame implements ActionListener {
         }
     }
 
-    private static void addToPanel(JPanel panel) {
+    private static void addToPanel() {
         for (JButton button : buttons.values()) {
             panel.add(button);
         }
@@ -106,6 +107,7 @@ class Calculator extends JFrame implements ActionListener {
         int thirdRowY = secRowY + firstRowY + gap;
         int fourthRowY = thirdRowY + firstRowY + gap;
 
+        buttons.get("colour").setBounds(5, fourthRowY + firstRowY + gap*2, buttonSizeX+50, buttonSizeY);
         buttons.get("del").setBounds(firstColX, firstRowY-40, buttonSizeX, buttonSizeY-15);
         buttons.get("oP").setBounds(firstColX, firstRowY, buttonSizeX, buttonSizeY);
         buttons.get("oM").setBounds(secColX, firstRowY, buttonSizeX, buttonSizeY);
@@ -113,7 +115,6 @@ class Calculator extends JFrame implements ActionListener {
         buttons.get("oD").setBounds(secColX, secRowY, buttonSizeX, buttonSizeY);
         buttons.get("dec").setBounds(firstColX, thirdRowY, buttonSizeX, buttonSizeY);
         buttons.get("clear").setBounds(secColX, thirdRowY, buttonSizeX, buttonSizeY);
-
         buttons.get("oEq").setBounds(firstColX+gap, fourthRowY, buttonSizeX*2, buttonSizeY);
     }
 
@@ -136,6 +137,13 @@ class Calculator extends JFrame implements ActionListener {
                 break;
             case "=":
                 calculate();
+                break;
+            case "Colour":
+                Color newColour = JColorChooser.showDialog(frame, "Choose colour", panel.getBackground());
+                if (newColour != null) {
+                    panel.setBackground(newColour);
+                }
+                break;
             default:
                 inputToCalculate += s;
                 textField.setText(inputToCalculate);
