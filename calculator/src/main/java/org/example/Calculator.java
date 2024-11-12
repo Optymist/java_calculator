@@ -6,20 +6,21 @@ import java.util.HashMap;
 import javax.swing.*;
 
 class Calculator extends JFrame implements ActionListener {
-    private static int buttonSizeX = 50;
-    private static int buttonSizeY = 50;
+    private static final int buttonSizeX = 50;
+    private static final int buttonSizeY = 50;
 
-    private static HashMap<String, JButton> buttons = new HashMap<>();
+    private static final HashMap<String, JButton> buttons = new HashMap<>();
 
     static JFrame frame;
     static JTextField textField;
 
-    String s0, s1, s2;
+    String inputToCalculate;
 
     Calculator() {
         frame = new JFrame("Calculator");
         textField = new JTextField(30);
-        s0 = s1 = s2 = "";
+        textField.setToolTipText("Type here...");
+        inputToCalculate = "";
     }
 
     public static void main(String[] args) {
@@ -31,7 +32,6 @@ class Calculator extends JFrame implements ActionListener {
 
         Calculator calculator = new Calculator();
 
-        textField.setEditable(false);
         textField.setBounds(10, 10, 180, 30);
 
         for (int i = 0; i < 10; i++) {
@@ -63,11 +63,12 @@ class Calculator extends JFrame implements ActionListener {
     private static void addNonNumberButtonsToMap() {
         buttons.put("oP", new JButton("+"));
         buttons.put("oM", new JButton("-"));
-        buttons.put("oT", new JButton("*"));
-        buttons.put("oD", new JButton("/"));
+        buttons.put("oT", new JButton("×"));
+        buttons.put("oD", new JButton("÷"));
         buttons.put("dec", new JButton("."));
         buttons.put("clear", new JButton("C"));
         buttons.put("oEq", new JButton("="));
+        buttons.put("del", new JButton("<-"));
     }
 
     private static void addActionListeners(Calculator calculator) {
@@ -105,6 +106,7 @@ class Calculator extends JFrame implements ActionListener {
         int thirdRowY = secRowY + firstRowY + gap;
         int fourthRowY = thirdRowY + firstRowY + gap;
 
+        buttons.get("del").setBounds(firstColX, firstRowY-40, buttonSizeX, buttonSizeY-15);
         buttons.get("oP").setBounds(firstColX, firstRowY, buttonSizeX, buttonSizeY);
         buttons.get("oM").setBounds(secColX, firstRowY, buttonSizeX, buttonSizeY);
         buttons.get("oT").setBounds(firstColX, secRowY, buttonSizeX, buttonSizeY);
@@ -119,6 +121,28 @@ class Calculator extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        String s = actionEvent.getActionCommand();
+        inputToCalculate = textField.getText();
 
+        switch (s) {
+            case "clear":
+                textField.setText("");
+                break;
+            case "<-":
+                if (!inputToCalculate.isEmpty()) {
+                    inputToCalculate = inputToCalculate.substring(0, inputToCalculate.length()-1);
+                    textField.setText(inputToCalculate);
+                }
+                break;
+            case "=":
+                calculate();
+            default:
+                inputToCalculate += s;
+                textField.setText(inputToCalculate);
+        }
+    }
+
+    private void calculate() {
+        JOptionPane.showMessageDialog(frame, "Calculating: " + inputToCalculate);
     }
 }
