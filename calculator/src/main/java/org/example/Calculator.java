@@ -157,8 +157,9 @@ public class Calculator extends JFrame implements ActionListener {
                 } catch (Exception e) {
                     if (e.getMessage().contains("/ by zero")) {
                         textField.setText("Can't ÷ by 0!");
+                    } else {
+                        textField.setText("Calculation error.");
                     }
-                    throw new RuntimeException(e.getMessage());
                 }
                 break;
             case "Colour":
