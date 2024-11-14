@@ -2,12 +2,14 @@ package org.example;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import javax.swing.*;
 
-class Calculator extends JFrame implements ActionListener {
+public class Calculator extends JFrame implements ActionListener {
     private static final int buttonSizeX = 50;
     private static final int buttonSizeY = 50;
 
@@ -19,7 +21,7 @@ class Calculator extends JFrame implements ActionListener {
 
     String inputToCalculate;
 
-    Calculator() {
+    public Calculator() {
         frame = new JFrame("Calculator");
         textField = new JTextField(30);
         textField.setToolTipText("Type here...");
@@ -169,9 +171,8 @@ class Calculator extends JFrame implements ActionListener {
     }
 
     private String calculate() throws Exception {
-        String[] nums = inputToCalculate.split("(?=[-+×÷^()])|(?<=[-+×÷^()])");
-        ArrayList<String> numList = new ArrayList<>(Arrays.asList(nums));
-        System.out.println(Arrays.toString(nums));
+        ArrayList<String> numList = tokenize(inputToCalculate);
+        System.out.println(numList);
 
         // Want to implement BODMAS
         try {
@@ -179,8 +180,6 @@ class Calculator extends JFrame implements ActionListener {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-
-        System.out.println(numList);
 
         evaluateOperators(numList, "^", "√");
         evaluateOperators(numList, "×", "÷");
@@ -192,6 +191,40 @@ class Calculator extends JFrame implements ActionListener {
         } else {
             return numList.getFirst();
         }
+    }
+
+    private static ArrayList<String> tokenize(String input) {
+        ArrayList<String> tokens = new ArrayList<>();
+
+        StringBuilder currentNumber = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            char current = input.charAt(i);
+
+            if (Character.isDigit(current) || current=='.') {
+                currentNumber.append(current);
+            } else {
+                if (!currentNumber.isEmpty()) {
+                    tokens.add(currentNumber.toString());
+                    currentNumber.setLength(0);
+                }
+                if (current == '-' && (i==0 || isOperator(input.charAt(i-1)))) {
+                    currentNumber.append(current);
+                } else {
+                    tokens.add(String.valueOf(current));
+                }
+            }
+        }
+
+        if (!currentNumber.isEmpty()) {
+            tokens.add(currentNumber.toString());
+        }
+
+        return tokens;
+    }
+
+    private static boolean isOperator(char c) {
+        return c=='+' || c=='-' || c=='÷' || c=='×' || c=='^' || c=='√' || c=='(';
     }
 
     private void evaluateBrackets(ArrayList<String> nums) throws Exception {
@@ -216,7 +249,7 @@ class Calculator extends JFrame implements ActionListener {
             if (brackList.size() != 1) {
                 throw new Exception("Failed to evaluate brackets correctly.");
             } else {
-                nums.add(index, brackList.get(0));
+                nums.add(index, brackList.getFirst());
             }
         }
     }
@@ -248,10 +281,18 @@ class Calculator extends JFrame implements ActionListener {
             case "√" -> Math.sqrt(right);
             case "^" -> Math.pow(left, right);
             case "×" -> left*right;
-            case "÷" -> left/right;
+            case "÷" -> Double.parseDouble(String.valueOf(BigDecimal.valueOf(left).divide(BigDecimal.valueOf(right), 2, RoundingMode.HALF_UP)));
             case "+" -> left + right;
             case "-" -> left - right;
             default -> throw new IllegalArgumentException("Invalid operator: " + operator);
         };
+    }
+
+    public HashMap<String, JButton> getButtons() {
+        return buttons;
+    }
+
+    public JTextField getTextField() {
+        return textField;
     }
 }
