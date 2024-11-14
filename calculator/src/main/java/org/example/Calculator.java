@@ -174,6 +174,7 @@ public class Calculator extends JFrame implements ActionListener {
                     } else {
                         textField.setText("Calculation error.");
                     }
+                    throw new RuntimeException(e.getMessage());
                 }
                 break;
             case "Colour":

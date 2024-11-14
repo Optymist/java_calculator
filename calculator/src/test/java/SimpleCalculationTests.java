@@ -1,7 +1,5 @@
 import org.example.Calculator;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,17 +9,16 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SimpleCalculationTests {
-    private Calculator calculator;
-    private JTextField textField;
+    private static Calculator calculator;
+    private static JTextField textField;
 
-    @BeforeEach
-    public void setUp() throws InterruptedException, InvocationTargetException {
+    @BeforeAll
+    public static void setUp() throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(() -> {
             calculator = new Calculator();
             Calculator.main(new String[]{});
             textField = calculator.getTextField();
         });
-
     }
 
     public void clickEquals() {
@@ -37,55 +34,41 @@ public class SimpleCalculationTests {
 
     @AfterEach
     public void tearDown() {
+        textField.setText("");
+    }
+
+    @AfterAll
+    public static void tearDownAll() {
         textField = null;
+        calculator = null;
     }
 
     @Test
     public void testSimpleAdd() throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(() -> addText("2+2"));
-
         SwingUtilities.invokeAndWait(this::clickEquals);
-
-        SwingUtilities.invokeAndWait(() -> {
-            textField = calculator.getTextField();
-            assertEquals("4.0", textField.getText());
-        });
+        SwingUtilities.invokeAndWait(() -> assertEquals("4.0", textField.getText()));
     }
 
     @Test
     public void testSimpleSubtract() throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(() -> addText("2-2"));
-
         SwingUtilities.invokeAndWait(this::clickEquals);
-
-        SwingUtilities.invokeAndWait(() -> {
-            textField = calculator.getTextField();
-            assertEquals("0.0", textField.getText());
-        });
+        SwingUtilities.invokeAndWait(() -> assertEquals("0.0", textField.getText()));
     }
 
     @Test
     public void testSimpleMultiply() throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(() -> addText("2×2"));
-
         SwingUtilities.invokeAndWait(this::clickEquals);
-
-        SwingUtilities.invokeAndWait(() -> {
-            textField = calculator.getTextField();
-            assertEquals("4.0", textField.getText());
-        });
+        SwingUtilities.invokeAndWait(() -> assertEquals("4.0", textField.getText()));
     }
 
     @Test
     public void testSimpleDivide() throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(() -> addText("2÷2"));
-
         SwingUtilities.invokeAndWait(this::clickEquals);
-
-        SwingUtilities.invokeAndWait(() -> {
-            textField = calculator.getTextField();
-            assertEquals("1.0", textField.getText());
-        });
+        SwingUtilities.invokeAndWait(() -> assertEquals("1.0", textField.getText()));
     }
 
     @Test
@@ -93,10 +76,22 @@ public class SimpleCalculationTests {
         SwingUtilities.invokeAndWait(() -> addText("2÷0"));
 
         SwingUtilities.invokeAndWait(() -> {
-            textField = calculator.getTextField();
             assertThrows(RuntimeException.class, this::clickEquals);
             assertEquals("Can't ÷ by 0!", textField.getText());
         });
     }
 
+    @Test
+    public void testPower() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(() -> addText("2^5"));
+        SwingUtilities.invokeAndWait(this::clickEquals);
+        SwingUtilities.invokeAndWait(() -> assertEquals("32.0", textField.getText()));
+    }
+
+    @Test
+    public void testSquareRoot() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(() -> addText("√64"));
+        SwingUtilities.invokeAndWait(this::clickEquals);
+        SwingUtilities.invokeAndWait(() -> assertEquals("8.0", textField.getText()));
+    }
 }

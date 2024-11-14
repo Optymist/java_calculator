@@ -6,9 +6,9 @@ import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class DecimalCalculationTests {
+public class ComplexCalculationTests {
     private static Calculator calculator;
     private static JTextField textField;
 
@@ -44,30 +44,31 @@ public class DecimalCalculationTests {
     }
 
     @Test
-    public void testDecAdd() throws InterruptedException, InvocationTargetException {
-        SwingUtilities.invokeAndWait(() -> addText("2.25+2.5"));
+    public void testAddAndMultiply() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(() -> addText("5+7*3+5*2"));
         SwingUtilities.invokeAndWait(this::clickEquals);
-        SwingUtilities.invokeAndWait(() -> assertEquals("4.75", textField.getText()));
+        SwingUtilities.invokeAndWait(() -> assertEquals("36.0", textField.getText()));
     }
 
     @Test
-    public void testDecSubtract() throws InterruptedException, InvocationTargetException {
-        SwingUtilities.invokeAndWait(() -> addText("2.75-2.5"));
+    public void testSubtractAndDivide() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(() -> addText("(5+5)/2"));
         SwingUtilities.invokeAndWait(this::clickEquals);
-        SwingUtilities.invokeAndWait(() -> assertEquals("0.25", textField.getText()));
+        SwingUtilities.invokeAndWait(() -> assertEquals("5.0", textField.getText()));
     }
 
     @Test
-    public void testDecMultiply() throws InterruptedException, InvocationTargetException {
-        SwingUtilities.invokeAndWait(() -> addText("2.75×2.5"));
+    public void testBODMASlongEquation() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(() -> addText("5+(6-8)/2-6"));
         SwingUtilities.invokeAndWait(this::clickEquals);
-        SwingUtilities.invokeAndWait(() -> assertEquals("6.875", textField.getText()));
+        SwingUtilities.invokeAndWait(() -> assertEquals("-2.0", textField.getText()));
     }
 
     @Test
-    public void testDecDivide() throws InterruptedException, InvocationTargetException {
-        SwingUtilities.invokeAndWait(() -> addText("6.8÷2.5"));
+    public void testComplexPower() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(() -> addText("5+5^(6+2)"));
         SwingUtilities.invokeAndWait(this::clickEquals);
-        SwingUtilities.invokeAndWait(() -> assertEquals("2.72", textField.getText()));
+        SwingUtilities.invokeAndWait(() -> assertEquals("390630.0", textField.getText()));
     }
+
 }
