@@ -26,6 +26,20 @@ public class Calculator extends JFrame implements ActionListener {
         textField = new JTextField(30);
         textField.setToolTipText("Type here...");
         inputToCalculate = "";
+
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    ActionEvent enter = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "=");
+                    actionPerformed(enter);
+                }
+                if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+                    ActionEvent delete = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "C");
+                    actionPerformed(delete);
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -186,7 +200,7 @@ public class Calculator extends JFrame implements ActionListener {
         }
 
         evaluateOperators(numList, "^", "√");
-        evaluateOperators(numList, "×", "÷");
+        evaluateOperators(numList, "×", "÷", "*", "/");
         evaluateOperators(numList, "+", "-");
 
         // Should have only one number left in the list (i.e. the result)
@@ -284,8 +298,8 @@ public class Calculator extends JFrame implements ActionListener {
         return switch (operator) {
             case "√" -> Math.sqrt(right);
             case "^" -> Math.pow(left, right);
-            case "×" -> left*right;
-            case "÷" -> Double.parseDouble(String.valueOf(BigDecimal.valueOf(left).divide(BigDecimal.valueOf(right), 2, RoundingMode.HALF_UP)));
+            case "×", "*" -> left*right;
+            case "÷", "/" -> Double.parseDouble(String.valueOf(BigDecimal.valueOf(left).divide(BigDecimal.valueOf(right), 2, RoundingMode.HALF_UP)));
             case "+" -> left + right;
             case "-" -> left - right;
             default -> throw new IllegalArgumentException("Invalid operator: " + operator);
