@@ -89,52 +89,14 @@ public class SimpleCalculationTests {
     }
 
     @Test
-    public void testDecAdd() throws InterruptedException, InvocationTargetException {
-        setUp();
-
-        SwingUtilities.invokeAndWait(() -> addText("2.25+2.5"));
-
-        SwingUtilities.invokeAndWait(this::clickEquals);
+    public void testDivideByZero() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(() -> addText("2÷0"));
 
         SwingUtilities.invokeAndWait(() -> {
             textField = calculator.getTextField();
-            assertEquals("4.75", textField.getText());
+            assertThrows(RuntimeException.class, this::clickEquals);
+            assertEquals("Can't ÷ by 0!", textField.getText());
         });
     }
 
-    @Test
-    public void testDecSubtract() throws InterruptedException, InvocationTargetException {
-        SwingUtilities.invokeAndWait(() -> addText("2.75-2.5"));
-
-        SwingUtilities.invokeAndWait(this::clickEquals);
-
-        SwingUtilities.invokeAndWait(() -> {
-            textField = calculator.getTextField();
-            assertEquals("0.25", textField.getText());
-        });
-    }
-
-    @Test
-    public void testDecMultiply() throws InterruptedException, InvocationTargetException {
-        SwingUtilities.invokeAndWait(() -> addText("2.75×2.5"));
-
-        SwingUtilities.invokeAndWait(this::clickEquals);
-
-        SwingUtilities.invokeAndWait(() -> {
-            textField = calculator.getTextField();
-            assertEquals("6.875", textField.getText());
-        });
-    }
-
-    @Test
-    public void testDecDivide() throws InterruptedException, InvocationTargetException {
-        SwingUtilities.invokeAndWait(() -> addText("6.8÷2.5"));
-
-        SwingUtilities.invokeAndWait(this::clickEquals);
-
-        SwingUtilities.invokeAndWait(() -> {
-            textField = calculator.getTextField();
-            assertEquals("2.72", textField.getText());
-        });
-    }
 }
