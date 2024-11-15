@@ -50,7 +50,46 @@ Make sure you have the following installed:
    java -cp bin org.example.Calculator
 
 
-5. After executing any of these a window should pop up with the calculator's screen evident.
+5. After executing any of these, a window should pop up with the calculator's screen evident.
 
 ### Testing the Calculator
+
+#### Option 1 (standard file navigation)
+
+1. Locate the test/java package.
+2. Right click and run the tests.
+
+#### Option 2 (from the command line)
+
+1. Navigate to the repository:
+   ```bash
+   cd ~/java_calculator/calculator
+2. Run the tests using Maven:
+   ```bash
+   mvn test
+
+
+3. After executing any of these, the tests should run and should all pass successfully.
+
+## Future Enhancements
+
+I plan to add more advanced features in future versions, including:
+- **Advanced Functions**: Adding support for square roots, trigonometric functions, radians, pi, and more advanced calculation functionality.
+- **Memory Functions**: Include options to store and recall memory values.
+- **Calculation History**: Show previous calculations, allowing users to reference or reuse past results.
+- **Error Logging**: Add a log for errors and warnings that users encounter while using the calculator.
+
+## Tech Stack
+
+The project is built with:
+- **Java**: Core programming language for the application.
+- **Java Swing**: Used for creating the graphical user interface (GUI).
+- **JUnit**: For unit testing and GUI testing.
+
+Optional:
+- **Maven** or **Gradle** (if used for managing dependencies or building the project).
+
+## Contributing
+
+This is a personal project that I have implemented for my own growth but if you would like to contribute you can email me at smartkimlyn@gmail.com.
 
