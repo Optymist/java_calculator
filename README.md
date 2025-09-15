@@ -91,5 +91,5 @@ Optional:
 
 ## Contributing
 
-This is a personal project that I have implemented for my own growth but if you would like to contribute you can email me at smartkimlyn@gmail.com.
+This is a personal project that I have implemented for my own growth but if you would like to contribute you can email me at kimlynsmart@gmail.com.
 
